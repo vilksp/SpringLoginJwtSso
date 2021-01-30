@@ -5,6 +5,7 @@ import ksp.vilius.exceptions.ApplicationUserCreatingException;
 import ksp.vilius.models.ApplicationUser;
 import ksp.vilius.repositories.ApplicationUserRepository;
 import ksp.vilius.services.UserServiceI;
+import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
@@ -12,6 +13,7 @@ import org.springframework.stereotype.Service;
 import static ksp.vilius.enums.Role.ROLE_USER;
 
 @Service
+@Slf4j
 public class UserServiceImpl implements UserServiceI {
     @Autowired
     private ApplicationUserRepository userRepository;
@@ -34,7 +36,7 @@ public class UserServiceImpl implements UserServiceI {
             userToCreate.setRole(ROLE_USER);
             //Role class haves all authorities from AuthorityConstant and now we are getting string array of all authorities from our ROLE_USER and setting it
             userToCreate.setAuthorities(userToCreate.getRole().getAuthorities());
-
+            log.info("new user is being created with username: " + userDto.getUsername());
             return userRepository.save(userToCreate);
         } catch (Exception e) {
             // exception doesn't specify if username or email is taken to ensure better security
