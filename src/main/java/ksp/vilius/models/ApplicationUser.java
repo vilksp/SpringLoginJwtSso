@@ -13,11 +13,11 @@ import javax.persistence.*;
 @NoArgsConstructor
 public class ApplicationUser {
     @Id
-    @GeneratedValue(strategy = GenerationType.AUTO)
+    @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long id;
-    @Column(unique = true)
+    @Column(unique = true,updatable = false)
     private String username;
-    @Column(unique = true)
+    @Column(unique = true,updatable = false)
     private String email;
     private String firstName;
     private String lastName;
