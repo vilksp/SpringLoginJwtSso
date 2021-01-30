@@ -1,6 +1,7 @@
 package ksp.vilius.services.implementation;
 
 import ksp.vilius.dto.CreateUserDto;
+import ksp.vilius.exceptions.ApplicationUserCreatingException;
 import ksp.vilius.models.ApplicationUser;
 import ksp.vilius.repositories.ApplicationUserRepository;
 import ksp.vilius.services.UserServiceI;
@@ -36,8 +37,9 @@ public class UserServiceImpl implements UserServiceI {
 
             return userRepository.save(userToCreate);
         } catch (Exception e) {
-            // Need to add Exception if username or email is not unique
+            // exception doesn't specify if username or email is taken to ensure better security
+            throw new ApplicationUserCreatingException("Username or email is already taken!");
         }
-        return null;
+
     }
 }
