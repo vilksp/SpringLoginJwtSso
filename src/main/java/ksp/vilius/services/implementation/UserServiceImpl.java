@@ -1,7 +1,8 @@
 package ksp.vilius.services.implementation;
 
 import ksp.vilius.dto.CreateUserDto;
-import ksp.vilius.exceptions.ApplicationUserCreatingException;
+import ksp.vilius.exceptions.ApplicationUserEmailsExistsException;
+import ksp.vilius.exceptions.ApplicationUserUsernameExistsException;
 import ksp.vilius.models.ApplicationUser;
 import ksp.vilius.repositories.ApplicationUserRepository;
 import ksp.vilius.services.UserServiceI;
@@ -20,28 +21,42 @@ public class UserServiceImpl implements UserServiceI {
     @Autowired
     private PasswordEncoder passwordEncoder;
 
+    private static String EMAIL_EXISTS_EXCEPTION = "This email is already taken";
+    private static String USERNAME_EXISTS_EXCEPTION = "This username is already taken";
 
     @Override
     public ApplicationUser registerNewUser(CreateUserDto userDto) {
-        try {
-            //Create new Application User
-            ApplicationUser userToCreate = new ApplicationUser();
-            //Set all properties from DTO to this User Object
-            userToCreate.setUsername(userDto.getUsername());
-            userToCreate.setEmail(userDto.getEmail());
-            userToCreate.setFirstName(userDto.getFirstName());
-            userToCreate.setLastName(userDto.getLastName());
-            userToCreate.setPassword(passwordEncoder.encode(userDto.getPassword()));
-            // everytime user is created it will get by Default USER role and authorities
-            userToCreate.setRole(ROLE_USER);
-            //Role class haves all authorities from AuthorityConstant and now we are getting string array of all authorities from our ROLE_USER and setting it
-            userToCreate.setAuthorities(userToCreate.getRole().getAuthorities());
-            log.info("new user is being created with username: " + userDto.getUsername());
-            return userRepository.save(userToCreate);
-        } catch (Exception e) {
-            // exception doesn't specify if username or email is taken to ensure better security
-            throw new ApplicationUserCreatingException("Username or email is already taken!");
-        }
 
+        //Create new Application User
+        ApplicationUser userToCreate = new ApplicationUser();
+
+        //Validate email and username if they are unique
+        validateEmailAndUsername(userDto);
+
+        //Set all properties from DTO to this User Object
+        userToCreate.setUsername(userDto.getUsername());
+        userToCreate.setEmail(userDto.getEmail());
+        userToCreate.setFirstName(userDto.getFirstName());
+        userToCreate.setLastName(userDto.getLastName());
+        userToCreate.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        // everytime user is created it will get by Default USER role and authorities
+        userToCreate.setRole(ROLE_USER);
+        //Role class haves all authorities from AuthorityConstant and now we are getting string array of all authorities from our ROLE_USER and setting it
+        userToCreate.setAuthorities(userToCreate.getRole().getAuthorities());
+        log.info("new user is being created with username: " + userDto.getUsername());
+        return userRepository.save(userToCreate);
+
+    }
+
+    private void validateEmailAndUsername(CreateUserDto userDto) {
+        ApplicationUser findByEmail = userRepository.findByEmail(userDto.getEmail());
+        //If findByEmail object is not null that means it already exists and we have to throw exception
+        if (findByEmail != null) {
+            throw new ApplicationUserEmailsExistsException(EMAIL_EXISTS_EXCEPTION);
+        }
+        ApplicationUser findByUsername = userRepository.findByUsername(userDto.getUsername());
+        if (findByUsername != null) {
+            throw new ApplicationUserUsernameExistsException(USERNAME_EXISTS_EXCEPTION);
+        }
     }
 }
