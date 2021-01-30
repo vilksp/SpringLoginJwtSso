@@ -3,12 +3,14 @@ package ksp.vilius.models;
 import ksp.vilius.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
+import lombok.NoArgsConstructor;
 
 import javax.persistence.*;
 
 @Entity
 @Data
 @AllArgsConstructor
+@NoArgsConstructor
 public class ApplicationUser {
     @Id
     @GeneratedValue(strategy = GenerationType.AUTO)
