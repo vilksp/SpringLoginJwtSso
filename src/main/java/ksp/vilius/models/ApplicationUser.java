@@ -1,5 +1,6 @@
 package ksp.vilius.models;
 
+import ksp.vilius.enums.Role;
 import lombok.AllArgsConstructor;
 import lombok.Data;
 
@@ -13,6 +14,6 @@ public class ApplicationUser {
     private String email;
     private String firstName;
     private String lastName;
-    private String role;
+    private Role role;
     private String[] authorities;
 }
