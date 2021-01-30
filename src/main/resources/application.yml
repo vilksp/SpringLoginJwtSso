@@ -1,0 +1,23 @@
+spring:
+  security:
+    oauth2:
+      client:
+        useCurrentUri: false
+        registration:
+          github:
+            client-id: 45f732685872b3461c16
+            client-secret: 47bb77d1b7aceda10c1d7d836ea9e76159be4d79
+            scope:
+              - email
+              - profile
+  datasource:
+    url: jdbc:mysql://localhost:3306/spring_login_app
+    password: mysql123
+    username: vilius
+    jpa:
+      show-sql: true
+      hibernate:
+        ddl-auto: create
+      properties:
+        hibernate:
+          dialect: org.hibernate.dialect.MySQL8Dialect
