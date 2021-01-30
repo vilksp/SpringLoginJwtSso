@@ -1,6 +1,7 @@
 package ksp.vilius.exceptions;
 
-public class ApplicationUserUsernameExistsException extends Throwable {
-    public ApplicationUserUsernameExistsException(String yeet) {
+public class ApplicationUserUsernameExistsException extends RuntimeException {
+    public ApplicationUserUsernameExistsException(String message) {
+        super(message);
     }
 }
