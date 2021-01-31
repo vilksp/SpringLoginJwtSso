@@ -4,10 +4,15 @@ import ksp.vilius.dto.CreateUserDto;
 import ksp.vilius.exceptions.ApplicationUserEmailsExistsException;
 import ksp.vilius.exceptions.ApplicationUserUsernameExistsException;
 import ksp.vilius.models.ApplicationUser;
+import ksp.vilius.payload.JwtSuccessLoginResponse;
+import ksp.vilius.payload.LoginRequest;
 import ksp.vilius.repositories.ApplicationUserRepository;
 import ksp.vilius.services.UserServiceI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
+import org.springframework.security.core.Authentication;
+import org.springframework.security.core.context.SecurityContextHolder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.stereotype.Service;
 
@@ -46,6 +51,18 @@ public class UserServiceImpl implements UserServiceI {
         log.info("new user is being created with username: " + userDto.getUsername());
         return userRepository.save(userToCreate);
 
+    }
+
+    @Override
+    public JwtSuccessLoginResponse authenticateUser(LoginRequest request) {
+        // Attempt authentication with username and password from loginrequest if not successful login will throw error
+        Authentication auth = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+
+        SecurityContextHolder.getContext().setAuthentication(auth);
+
+        //Generate token
+        String jwt = "";
+        return new JwtSuccessLoginResponse(jwt);
     }
 
     private void validateEmailAndUsername(CreateUserDto userDto) {
