@@ -28,6 +28,7 @@ public class ApplicationUser {
     private boolean isEnabled;
 
     public ApplicationUser(ApplicationUser user) {
+        this.id = user.getId();
         this.username = user.getUsername();
         this.email = user.getEmail();
         this.firstName = user.getFirstName();
