@@ -50,13 +50,16 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .antMatchers("/api/**").permitAll()
                 .and()
                 .formLogin().disable()
-                .csrf().disable();
+                .csrf().disable()
+                .cors().disable()
+                .httpBasic().disable();
 
     }
 
     @Override
     protected void configure(AuthenticationManagerBuilder auth) throws Exception {
-        auth.userDetailsService(customUserDetailsService)
+        auth
+                .userDetailsService(customUserDetailsService)
                 .passwordEncoder(passwordEncoder);
     }
 }
