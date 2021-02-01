@@ -50,6 +50,8 @@ public class UserServiceImpl implements UserServiceI {
         userToCreate.setFirstName(userDto.getFirstName());
         userToCreate.setLastName(userDto.getLastName());
         userToCreate.setPassword(passwordEncoder.encode(userDto.getPassword()));
+        userToCreate.setEnabled(true);
+        userToCreate.setLocked(true);
         // everytime user is created it will get by Default USER role and authorities
         userToCreate.setRole(ROLE_USER);
         //Role class haves all authorities from AuthorityConstant and now we are getting string array of all authorities from our ROLE_USER and setting it
