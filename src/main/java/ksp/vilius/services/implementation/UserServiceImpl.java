@@ -11,6 +11,7 @@ import ksp.vilius.security.JwtTokenProvider;
 import ksp.vilius.services.UserServiceI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.authentication.AuthenticationManager;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;
 import org.springframework.security.core.Authentication;
 import org.springframework.security.core.context.SecurityContextHolder;
@@ -28,6 +29,8 @@ public class UserServiceImpl implements UserServiceI {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private JwtTokenProvider tokenProvider;
+    @Autowired
+    private AuthenticationManager authenticationManager;
 
     private static String EMAIL_EXISTS_EXCEPTION = "This email is already taken";
     private static String USERNAME_EXISTS_EXCEPTION = "This username is already taken";
@@ -59,7 +62,7 @@ public class UserServiceImpl implements UserServiceI {
     @Override
     public JwtSuccessLoginResponse authenticateUser(LoginRequest request) {
         // Attempt authentication with username and password from loginrequest if not successful login will throw error
-        Authentication auth = new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword());
+        Authentication auth = authenticationManager.authenticate(new UsernamePasswordAuthenticationToken(request.getUsername(), request.getPassword()));
 
         SecurityContextHolder.getContext().setAuthentication(auth);
 
