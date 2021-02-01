@@ -2,6 +2,7 @@ package ksp.vilius.security;
 
 import ksp.vilius.models.ApplicationUser;
 import ksp.vilius.repositories.ApplicationUserRepository;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
@@ -10,10 +11,11 @@ import org.springframework.stereotype.Service;
 @Service
 public class CustomUserDetailsService implements UserDetailsService {
 
+    @Autowired
     private ApplicationUserRepository userRepository;
 
     @Override
-    public UserDetails loadUserByUsername(String username) {
+    public UserDetails loadUserByUsername(String username) throws  UsernameNotFoundException{
         //Search if this user is in database if not throw exception,
         // else create user that fulfills UserDetails contract
         ApplicationUser userToFindByUsername = userRepository.findByUsername(username);
