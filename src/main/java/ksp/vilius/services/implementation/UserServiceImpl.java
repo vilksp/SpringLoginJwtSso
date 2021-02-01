@@ -7,6 +7,7 @@ import ksp.vilius.models.ApplicationUser;
 import ksp.vilius.payload.JwtSuccessLoginResponse;
 import ksp.vilius.payload.LoginRequest;
 import ksp.vilius.repositories.ApplicationUserRepository;
+import ksp.vilius.security.JwtTokenProvider;
 import ksp.vilius.services.UserServiceI;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,6 +26,8 @@ public class UserServiceImpl implements UserServiceI {
     private ApplicationUserRepository userRepository;
     @Autowired
     private PasswordEncoder passwordEncoder;
+    @Autowired
+    private JwtTokenProvider tokenProvider;
 
     private static String EMAIL_EXISTS_EXCEPTION = "This email is already taken";
     private static String USERNAME_EXISTS_EXCEPTION = "This username is already taken";
@@ -61,7 +64,7 @@ public class UserServiceImpl implements UserServiceI {
         SecurityContextHolder.getContext().setAuthentication(auth);
 
         //Generate token
-        String jwt = "";
+        String jwt = tokenProvider.generateToken(auth);
         return new JwtSuccessLoginResponse(jwt);
     }
 
