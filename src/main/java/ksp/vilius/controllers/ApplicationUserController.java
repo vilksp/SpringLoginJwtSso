@@ -2,6 +2,8 @@ package ksp.vilius.controllers;
 
 import ksp.vilius.dto.CreateUserDto;
 import ksp.vilius.models.ApplicationUser;
+import ksp.vilius.payload.JwtSuccessLoginResponse;
+import ksp.vilius.payload.LoginRequest;
 import ksp.vilius.services.UserServiceI;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
@@ -22,6 +24,12 @@ public class ApplicationUserController {
     public ResponseEntity<ApplicationUser> registerNewUserToApplication(@RequestBody CreateUserDto userDto) {
 
         return new ResponseEntity<>(userService.registerNewUser(userDto), HttpStatus.OK);
+    }
+
+    @PostMapping("/login")
+    public ResponseEntity<JwtSuccessLoginResponse> authenticateUser(@RequestBody LoginRequest loginRequest) {
+
+        return new ResponseEntity<>(userService.authenticateUser(loginRequest), HttpStatus.OK);
     }
 
 }
