@@ -16,6 +16,7 @@ import org.springframework.security.config.annotation.web.configuration.WebSecur
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
+import static ksp.vilius.constants.SecurityConstant.ALLOWED_URLS_WITH_NO_AUTH;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
 
 @EnableWebSecurity
@@ -60,7 +61,8 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .sessionCreationPolicy(STATELESS)
                 .and()
                 .authorizeRequests()
-                .antMatchers("/api/**").permitAll()
+                .antMatchers(ALLOWED_URLS_WITH_NO_AUTH).permitAll()
+                .anyRequest().authenticated()
                 .and()
                 .formLogin().disable()
                 .csrf().disable()
