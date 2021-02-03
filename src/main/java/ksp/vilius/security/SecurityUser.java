@@ -39,7 +39,7 @@ public class SecurityUser extends ApplicationUser implements UserDetails {
 
     @Override
     public boolean isAccountNonLocked() {
-        return super.isLocked();
+        return super.isNotLocked();
     }
 
     @Override
@@ -49,6 +49,6 @@ public class SecurityUser extends ApplicationUser implements UserDetails {
 
     @Override
     public boolean isEnabled() {
-        return super.isLocked();
+        return super.isNotLocked();
     }
 }

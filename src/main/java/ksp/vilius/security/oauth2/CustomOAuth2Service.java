@@ -35,7 +35,7 @@ public class CustomOAuth2Service extends DefaultOAuth2UserService {
             newUser.setAuthority(newUser.getRole().getAuthorities());
             //TODO add random password
             newUser.setPassword("");
-            newUser.setLocked(true);
+            newUser.setNotLocked(true);
             newUser.setEnabled(true);
             userRepository.save(newUser);
         }

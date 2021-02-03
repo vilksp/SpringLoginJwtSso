@@ -24,7 +24,7 @@ public class ApplicationUser {
     private String password;
     private Role role;
     private String[] authority;
-    private boolean isLocked;
+    private boolean isNotLocked;
     private boolean isEnabled;
 
     public ApplicationUser(ApplicationUser user) {
@@ -36,7 +36,7 @@ public class ApplicationUser {
         this.password = user.getPassword();
         this.role = user.getRole();
         this.authority = user.getAuthority();
-        this.isLocked = user.isLocked();
+        this.isNotLocked = user.isNotLocked();
         this.isEnabled = user.isEnabled();
     }
 }
