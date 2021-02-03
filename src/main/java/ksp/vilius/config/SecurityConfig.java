@@ -1,8 +1,10 @@
 package ksp.vilius.config;
 
+import ksp.vilius.events.SuccessfulAuthenticationHandler;
 import ksp.vilius.security.CustomUserDetailsService;
 import ksp.vilius.security.JwtAuthenticationEntryPoint;
 import ksp.vilius.security.JwtFilter;
+import ksp.vilius.security.oauth2.CustomOAuth2Service;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
@@ -14,6 +16,7 @@ import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
 
 import static ksp.vilius.constants.SecurityConstant.ALLOWED_URLS_WITH_NO_AUTH;
@@ -36,6 +39,10 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
     private PasswordEncoder passwordEncoder;
     @Autowired
     private CustomUserDetailsService customUserDetailsService;
+    @Autowired
+    private AuthenticationSuccessHandler successfulAuthenticationHandler;
+    @Autowired
+    private CustomOAuth2Service customOAuth2Service;
 
 
     @Bean(BeanIds.AUTHENTICATION_MANAGER)
@@ -68,6 +75,12 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .csrf().disable()
                 .cors().disable()
                 .httpBasic().disable();
+
+        //OAuth2 configuration
+        http.oauth2Login()
+                .successHandler(successfulAuthenticationHandler)
+                .userInfoEndpoint()
+                .userService(customOAuth2Service);
 
     }
 }
