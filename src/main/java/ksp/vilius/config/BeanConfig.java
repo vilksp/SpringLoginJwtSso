@@ -22,7 +22,7 @@ public class BeanConfig {
     }
 
     @Bean
-    public AuthenticationSuccessHandler successfulAuthenticationHandler() {
+    public AuthenticationSuccessHandler successHandler() {
         return new SuccessfulAuthenticationHandler();
     }
 }
