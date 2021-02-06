@@ -38,3 +38,10 @@ body {
 	float: left;
 	margin: 0 10px;
 }
+.btn {
+	width: 100%;
+	background: none;
+	border: 2px solid #4caf50;
+	height: 40px;
+	margin: 3px;
+}

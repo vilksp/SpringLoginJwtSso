@@ -11,7 +11,9 @@ class Login extends Component {
 				<div className="text-box">
 					<input type="password" placeholder="Password" value=""></input>
 				</div>
-				<input classname="btn" type="button" value="Sign in" />
+				<input className="btn" type="button" value="Sign in" />
+				<button className="btn">Login with GitHub</button>
+				<button className="btn">Don't have an account? Register here</button>
 			</div>
 		);
 	}
