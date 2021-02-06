@@ -1,11 +1,13 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
+import { login } from "../services/auth-service";
 import "./login.css";
 function Login() {
 	const [details, setDetails] = useState({ username: "", password: "" });
 
 	const submitHandler = (e) => {
 		if (details.username !== "" && details.password !== "") {
+			login(details);
 			console.log(details);
 		}
 	};
