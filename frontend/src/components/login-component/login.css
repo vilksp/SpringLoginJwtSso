@@ -28,6 +28,9 @@ body {
 	margin: 8px 0;
 	border-bottom: 1px solid #4caf50;
 }
+.text-box:hover {
+	border-bottom: 1px solid black;
+}
 .text-box input {
 	border: none;
 	outline: none;
@@ -44,4 +47,7 @@ body {
 	border: 2px solid #4caf50;
 	height: 40px;
 	margin: 3px;
+}
+.btn:hover {
+	border: 2px solid black;
 }
