@@ -1,6 +1,5 @@
 package ksp.vilius.config;
 
-import ksp.vilius.events.SuccessfulAuthenticationHandler;
 import ksp.vilius.security.CustomUserDetailsService;
 import ksp.vilius.security.JwtAuthenticationEntryPoint;
 import ksp.vilius.security.JwtFilter;
@@ -13,11 +12,16 @@ import org.springframework.security.config.BeanIds;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.builders.WebSecurity;
 import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.crypto.password.PasswordEncoder;
 import org.springframework.security.web.authentication.AuthenticationSuccessHandler;
 import org.springframework.security.web.authentication.UsernamePasswordAuthenticationFilter;
+import org.springframework.web.cors.CorsConfiguration;
+import org.springframework.web.cors.CorsConfigurationSource;
+
+import java.util.List;
 
 import static ksp.vilius.constants.SecurityConstant.ALLOWED_URLS_WITH_NO_AUTH;
 import static org.springframework.security.config.http.SessionCreationPolicy.STATELESS;
@@ -58,11 +62,13 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .passwordEncoder(passwordEncoder);
     }
 
+
+
+
     @Override
     protected void configure(HttpSecurity http) throws Exception {
         http
-                .cors()
-                .and()
+
                 .addFilterBefore(jwtFilter, UsernamePasswordAuthenticationFilter.class)
                 .exceptionHandling().authenticationEntryPoint(authenticationEntryPoint)
                 .and()
@@ -75,8 +81,20 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
                 .and()
                 .formLogin().disable()
                 .csrf().disable()
-//                .cors().disable()
                 .httpBasic().disable();
+
+        http.cors(c -> {
+            CorsConfigurationSource config = r -> {
+                CorsConfiguration corsConfiguration = new CorsConfiguration();
+                corsConfiguration.setAllowedOrigins(List.of("http://localhost:3000"));
+                corsConfiguration.setAllowedMethods(List.of("GET", "POST", "DELETE", "OPTIONS", "PUT", "PATCH"));
+                corsConfiguration.setAllowedHeaders(List.of("Content-Type", "X-Requested-With",
+                        "accept", "Origin", "Access-Control-Request-Method",
+                        "Access-Control-Request-Headers"));
+                return corsConfiguration;
+            };
+            c.configurationSource(config);
+        });
 
         //OAuth2 configuration
         http.oauth2Login()
