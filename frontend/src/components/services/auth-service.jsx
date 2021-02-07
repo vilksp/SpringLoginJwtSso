@@ -21,3 +21,11 @@ const storeToken = (token) => {
 export const getToken = () => {
 	const jwt_token = cookies.get("JWT");
 };
+
+export const githubLogin = () => {
+	try {
+		axios.post("http://localhost:8080/oauth2/authorization/github");
+	} catch (err) {
+		console.log(err);
+	}
+};

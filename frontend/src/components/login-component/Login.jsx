@@ -1,6 +1,6 @@
 import React, { useState } from "react";
 import { Link } from "react-router-dom";
-import { login } from "../services/auth-service";
+import { githubLogin, login } from "../services/auth-service";
 import "./login.css";
 function Login() {
 	const [details, setDetails] = useState({ username: "", password: "" });
@@ -36,7 +36,9 @@ function Login() {
 				value="Sign in"
 				onClick={submitHandler}
 			/>
-			<button className="btn">Login with GitHub</button>
+			<button className="btn" onClick={githubLogin}>
+				Login with GitHub
+			</button>
 			<Link to="/register">
 				<button className="btn">Don't have an account? Register here</button>
 			</Link>
