@@ -1,6 +1,6 @@
 import React, { useState } from "react";
-import { Link } from "react-router-dom";
-import { githubLogin, login } from "../services/auth-service";
+import { Link, Redirect } from "react-router-dom";
+import { login } from "../services/auth-service";
 import "./login.css";
 function Login() {
 	const [details, setDetails] = useState({ username: "", password: "" });
@@ -8,7 +8,6 @@ function Login() {
 	const submitHandler = (e) => {
 		if (details.username !== "" && details.password !== "") {
 			login(details);
-			console.log(details);
 		}
 	};
 	return (
@@ -36,8 +35,10 @@ function Login() {
 				value="Sign in"
 				onClick={submitHandler}
 			/>
-			<button className="btn" onClick={githubLogin}>
-				Login with GitHub
+			<button className="btn">
+				<a href="http://localhost:8080/oauth2/authorization/github">
+					Login with github
+				</a>
 			</button>
 			<Link to="/register">
 				<button className="btn">Don't have an account? Register here</button>

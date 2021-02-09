@@ -1,5 +1,6 @@
 import axios from "axios";
 import cookies from "js-cookie";
+import { Redirect } from "react-router";
 
 export const login = (details) => {
 	try {
@@ -20,12 +21,4 @@ const storeToken = (token) => {
 
 export const getToken = () => {
 	const jwt_token = cookies.get("JWT");
-};
-
-export const githubLogin = () => {
-	try {
-		axios.post("http://localhost:8080/oauth2/authorization/github");
-	} catch (err) {
-		console.log(err);
-	}
 };
