@@ -55,18 +55,18 @@ public class SuccessfulAuthenticationHandler implements AuthenticationSuccessHan
             userRepository.save(user);
 
             //We previously had OAuth2 type authentication now after creating user to meet requirements
-
             Authentication auth = new UsernamePasswordAuthenticationToken(userToFind, null, userToFind.getAuthorities());
             String jwtToken = tokenProvider.generateToken(auth);
             //if everything goes fine we will add token as a cookie
             response.addCookie(new Cookie("JWT", jwtToken));
             System.out.println(jwtToken);
+        } else {
+            Authentication auth = new UsernamePasswordAuthenticationToken(userToFind, null, userToFind.getAuthorities());
+            String jwtToken = tokenProvider.generateToken(auth);
+            response.addCookie(new Cookie("JWT", jwtToken));
+            System.out.println(jwtToken);
         }
-        Authentication auth = new UsernamePasswordAuthenticationToken(userToFind, null, userToFind.getAuthorities());
-        String jwtToken = tokenProvider.generateToken(auth);
-        response.addCookie(new Cookie("JWT", jwtToken));
-        System.out.println(jwtToken);
 
-        response.sendRedirect("/");
+        response.sendRedirect("http://localhost:3000");
     }
 }
