@@ -28,27 +28,26 @@ public class JwtFilter extends OncePerRequestFilter {
     @Override
     protected void doFilterInternal(HttpServletRequest request, HttpServletResponse response, FilterChain filterChain)
             throws ServletException, IOException {
-        try {
-            String jwt = getJwtFromRequest(request);
 
-            if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
-                //Extract user id from jwt token
-                Long userId = tokenProvider.getUserIdFromJwt(jwt);
+        String jwt = getJwtFromRequest(request);
 
-                SecurityUser user = (SecurityUser) userDetailsService.loadUserById(userId);
+        if (StringUtils.hasText(jwt) && tokenProvider.validateToken(jwt)) {
+            //Extract user id from jwt token
+            Long userId = tokenProvider.getUserIdFromJwt(jwt);
 
-                UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
-                auth.setDetails(new WebAuthenticationDetailsSource()
-                        .buildDetails(request));
-                //If everything goes fine, set authentication to Security context holder
-                SecurityContextHolder.getContext().setAuthentication(auth);
-            }
+            SecurityUser user = (SecurityUser) userDetailsService.loadUserById(userId);
 
-        } catch (Exception e) {
-            log.error("Could not set authentication in security context!", e);
+            UsernamePasswordAuthenticationToken auth = new UsernamePasswordAuthenticationToken(user, null, user.getAuthorities());
+            auth.setDetails(new WebAuthenticationDetailsSource()
+                    .buildDetails(request));
+            //If everything goes fine, set authentication to Security context holder
+            SecurityContextHolder.getContext().setAuthentication(auth);
+
+        } else {
+
+
+            filterChain.doFilter(request, response);
         }
-
-        filterChain.doFilter(request, response);
     }
 
     private String getJwtFromRequest(HttpServletRequest request) {
