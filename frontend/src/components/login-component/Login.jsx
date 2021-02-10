@@ -1,6 +1,6 @@
-import React, { useState } from "react";
+import React, { useState, useEffect } from "react";
 import { Link, Redirect } from "react-router-dom";
-import { login } from "../services/auth-service";
+import { isTokenValid, login } from "../services/auth-service";
 import "./login.css";
 function Login() {
 	const [details, setDetails] = useState({ username: "", password: "" });
@@ -10,6 +10,12 @@ function Login() {
 			login(details);
 		}
 	};
+	useEffect(() => {
+		if (isTokenValid()) {
+			window.location.replace("/");
+		}
+	});
+
 	return (
 		<div className="login-box">
 			<h1>Login</h1>
