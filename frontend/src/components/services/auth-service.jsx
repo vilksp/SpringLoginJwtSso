@@ -1,12 +1,14 @@
 import axios from "axios";
 import Cookies from "js-cookie";
 import jwt_decode from "jwt-decode";
+import { Redirect } from "react-router";
 
 export const login = (details) => {
 	try {
 		axios
 			.post("http://localhost:8080/api/user/login", details)
-			.then((res) => storeToken(res.data.jwt));
+			.then((res) => storeToken(res.data.jwt))
+			.then(() => window.location.replace("/"));
 	} catch (err) {
 		console.log(err);
 	}
