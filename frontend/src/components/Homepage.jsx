@@ -1,12 +1,17 @@
-import React, { Component } from "react";
+import React, { Component, useEffect } from "react";
+import { isTokenValid } from "./services/auth-service";
 
-class Homepage extends React.Component {
-	render() {
-		return (
-			<div>
-				<h1>homepage</h1>
-			</div>
-		);
-	}
+function Homepage() {
+	useEffect(() => {
+		if (!isTokenValid()) {
+			window.location.replace("/login");
+		}
+	});
+
+	return (
+		<div>
+			<h1>Your logged in</h1>
+		</div>
+	);
 }
 export default Homepage;
