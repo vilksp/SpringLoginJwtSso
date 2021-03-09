@@ -42,3 +42,13 @@ export const isTokenValid = () => {
 export const logout = () => {
 	Cookies.remove("JWT");
 };
+
+export const registerNewUser = (details) => {
+	try {
+		axios
+			.post("http://localhost:8080/api/user/register", details)
+			.then(() => window.location.replace("/login"));
+	} catch (err) {
+		console.log(err);
+	}
+};
